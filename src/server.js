@@ -21,6 +21,13 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // routers
+import customersRouter from './routes/customersRouter';
+import employeesRouter from './routes/employeesRouter';
+import usersRouter from './routes/usersRouter';
+
+app.use('/customers', customersRouter);
+app.use('/employees', employeesRouter);
+app.use('/users', usersRouter);
 
 // test api
 app.get('/', (req, res) => {
