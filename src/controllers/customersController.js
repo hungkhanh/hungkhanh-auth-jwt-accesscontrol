@@ -1,4 +1,5 @@
 import db from '../models';
+import accesscontrol from '../policy/role';
 
 const User = db.users
 const Employee = db.employees

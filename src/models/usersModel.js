@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         employeeNumber: {
             type: DataTypes.INTEGER,
+            unique: true
         }
     }, {
         timestamps: false,

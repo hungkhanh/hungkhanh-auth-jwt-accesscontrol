@@ -2,25 +2,25 @@
 
 <h1><%= title %></h1>
 <div class="container">
-    <form action="/users/info" method="post">
+    <form action="/employees" method="post">
         <div class="input">
             <div class="left">
-                <input type="text" name="firstname" id="firstname" placeholder="First name">
+                <input type="text" name="firstName" id="firstName" placeholder="First name">
                 <input type="email" name="email" id="email" placeholder="Email">
                 <input type="text" name="officeCode" id="officeCode" placeholder="Office code">
                 <input type="number" name="reportsTo" id="reportsTo" placeholder="Reports to">
             </div>
         
             <div class="right">
-                <input type="text" name="lastname" id="lastname" placeholder="Last name">
+                <input type="text" name="lastName" id="lastName" placeholder="Last name">
                 <input type="text" name="extension" id="extension" placeholder="Extension">
 
                 <label for="jobTitle">Job Title:</label>
                 <select name="jobTitle" id="jobTitle">
-                    <option value="president">President</option>
-                    <option value="manager">Manager</option>
-                    <option value="leader">Leader</option>
-                    <option value="staff">Staff</option>
+                    <option value="President">President</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Leader">Leader</option>
+                    <option value="Staff">Staff</option>
                 </select>
             </div>
         </div>

@@ -3,10 +3,13 @@ dotenv.config();
 
 import express from 'express';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import ejs from 'ejs';
 
 import path from 'path';
+
+import verifyToken from './middlewares/auth';
 
 const app = express();
 const corOptions = {
@@ -15,7 +18,9 @@ const corOptions = {
 
 // middlewares
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(cors(corOptions));
+app.use(express.json());
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -25,8 +30,8 @@ import customersRouter from './routes/customersRouter';
 import employeesRouter from './routes/employeesRouter';
 import usersRouter from './routes/usersRouter';
 
-app.use('/customers', customersRouter);
-app.use('/employees', employeesRouter);
+app.use('/customers', verifyToken, customersRouter);
+app.use('/employees', verifyToken, employeesRouter);
 app.use('/users', usersRouter);
 
 // test api

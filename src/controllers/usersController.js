@@ -6,8 +6,6 @@ import jwt from 'jsonwebtoken';
 import db from '../models';
 
 const User = db.users
-const Employee = db.employees
-const Customer = db.customers
 
 // 1. GET login
 const loginGet = (req, res) => {
@@ -18,13 +16,19 @@ const loginGet = (req, res) => {
 const loginPost = async (req, res) => {
     const data = req.body;
     try {
-        const user = await User.findByPk(data.username);        
+        const user = await User.findByPk(data.username);
+        if(!user) {
+            res.sendStatus(401);
+        }
         const result = await comparePromise(data.password, user.password);
-        console.log(`result: ${result}`); // OK
-        // res.status(201).json({
-        //     success: true,
-        //     message: "create a new user"
-        // });
+        if(result === true) {
+            if(!user.employeeNumber) {
+                res.status(100).redirect('/users/info');
+            }
+            const accessToken = jwt.sign(user.username, process.env.ACCESS_TOKEN_SECRET);
+            res.cookie('jwt_token', accessToken);
+            res.redirect('/users/dashboard');
+        }
     } catch (error) {
         console.log(error);
     }
@@ -38,16 +42,15 @@ const registerGet = (req, res) => {
 // 4. POST register: create user
 const createUser = async (req, res) => {
     const data = req.body;
-    delete data['re-password'];
+    delete data['re-password']; 
     try {
         const salt = await genSaltPromise();
         const hash = await hashPasswordPromise(data.password, salt);
         data.password = hash;
         const user = await User.create(data);
-        res.status(201).json({
-            success: true,
-            message: "create a new user"
-        });
+        const accessToken = jwt.sign(user.username, process.env.ACCESS_TOKEN_SECRET);
+        res.cookie('jwt_token', accessToken);
+        res.status(201).redirect('/users/info');
     } catch (error) {
         console.log(error);
     }
@@ -58,11 +61,10 @@ const infoGet = (req, res) => {
     res.status(200).render('info', { title: 'Infomation' });
 }
 
-// 6. POST info
-const infoPost = async (req, res) => {
-    const data = req.body;
-    console.log(data);
+const dashboardGet = (req, res) => {
+    res.status(200).render('dashboard', { title: 'Dashboard' });
 }
+
 
 // use promise bcrypt
 function genSaltPromise() {
@@ -109,6 +111,5 @@ module.exports = {
     registerGet,
     createUser,
 
-    infoGet,
-    infoPost,
+    infoGet
 }
