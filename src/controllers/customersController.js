@@ -57,10 +57,11 @@ const getAllCustomers = async (req, res) => {
 }
 
 // 2. create a customer
-const createCustomer = async (req, res) => {
+const createCustomer = async (err, req, res) => {
     const data = req.body;
     const username = res.locals.username;
     try {
+
         const user = await User.findByPk(username);
         const employee = await Employee.findByPk(user.employeeNumber);
         const jobTitle = employee.jobTitle;
@@ -108,6 +109,7 @@ const createCustomer = async (req, res) => {
             data: customer
         })
     } catch (error) {
+        if(error.is)
         console.log(error);
     }
 }

@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import ejs from 'ejs';
-
+import { errors } from 'celebrate';
 import path from 'path';
 
 import verifyToken from './middlewares/auth';
@@ -22,6 +22,7 @@ app.use(cookieParser());
 app.use(cors(corOptions));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(errors());
 
 
 app.set('view engine', 'ejs');
@@ -31,6 +32,7 @@ app.set('views', path.join(__dirname, 'views'));
 import customersRouter from './routes/customersRouter';
 import employeesRouter from './routes/employeesRouter';
 import usersRouter from './routes/usersRouter';
+
 
 app.use('/customers', verifyToken, customersRouter);
 app.use('/employees', verifyToken, employeesRouter);

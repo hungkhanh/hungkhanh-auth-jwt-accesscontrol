@@ -18,21 +18,17 @@ const loginPost = async (req, res) => {
     try {
         const user = await User.findByPk(data.username);
         if(!user) {
-            res.sendStatus(401);
+            return res.sendStatus(401);
         }
         const result = await comparePromise(data.password, user.password);
         if(result === true) {
             const accessToken = jwt.sign(user.username, process.env.ACCESS_TOKEN_SECRET);
             console.log(`Token: ${accessToken}`);
             res.cookie('jwt_token', accessToken);
-            if(!user.employeeNumber) {
-                // President and Manager can create employee with user/ info
-                // res.redirect('/users/info');
-
-            } else {
-                // res.redirect('/users/dashboard');
-                res.redirect('/');
-            }            
+            res.status(200).json({
+                success: true,
+                token: accessToken
+            })
         }
     } catch (error) {
         console.log(error);
