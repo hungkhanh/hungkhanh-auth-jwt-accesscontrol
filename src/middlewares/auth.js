@@ -8,11 +8,11 @@ const verifyToken = (req, res, next) => {
     }
     try {
         const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        req.locals.username = decoded;
+        res.locals.username = decoded;
         next();
     } catch (error) {
         console.log(error);
-        return res.sendStatus(403).end();
+        return res.sendStatus(403);
     }
 }
 

@@ -8,6 +8,7 @@ router.route('/')
     .get(employeesController.getAllEmployees)
     .post(employeesController.createEmployee)
     .delete(employeesController.deleteAllEmployees)
+    .patch(employeesController.linkEmployee)
 
 router.route('/:employeeNumber')
     .get(employeesController.getOneEmployee)
@@ -15,8 +16,10 @@ router.route('/:employeeNumber')
     .patch(employeesController.updateEmployee)
     .delete(employeesController.deleteOneEmployee)
 
-    router.get('/:employeeNumber/getAllCustomers', employeesController.getCusomtersOfEmployee)
-    router.get('/:employeeNumber/getAllStaffs', employeesController.getStaffsOfEmployee)
+   
+
+    // router.get('/:employeeNumber/getAllCustomers', employeesController.getCusomtersOfEmployee)
+    // router.get('/:employeeNumber/getAllStaffs', employeesController.getStaffsOfEmployee)
 
 
 

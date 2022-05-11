@@ -22,12 +22,17 @@ const loginPost = async (req, res) => {
         }
         const result = await comparePromise(data.password, user.password);
         if(result === true) {
-            if(!user.employeeNumber) {
-                res.status(100).redirect('/users/info');
-            }
             const accessToken = jwt.sign(user.username, process.env.ACCESS_TOKEN_SECRET);
+            console.log(`Token: ${accessToken}`);
             res.cookie('jwt_token', accessToken);
-            res.redirect('/users/dashboard');
+            if(!user.employeeNumber) {
+                // President and Manager can create employee with user/ info
+                // res.redirect('/users/info');
+
+            } else {
+                // res.redirect('/users/dashboard');
+                res.redirect('/');
+            }            
         }
     } catch (error) {
         console.log(error);
@@ -49,6 +54,7 @@ const createUser = async (req, res) => {
         data.password = hash;
         const user = await User.create(data);
         const accessToken = jwt.sign(user.username, process.env.ACCESS_TOKEN_SECRET);
+        console.log(`Token: ${accessToken}`);
         res.cookie('jwt_token', accessToken);
         res.status(201).redirect('/users/info');
     } catch (error) {

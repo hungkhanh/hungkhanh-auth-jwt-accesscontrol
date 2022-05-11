@@ -14,6 +14,5 @@ router.route('/login')
 
 router.route('/info')
     .get(usersController.infoGet)
-    .post(usersController.infoPost)
 
 module.exports = router;

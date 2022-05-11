@@ -13,7 +13,6 @@ accesscontrol
         .readAny('employees')
         .create('customers').read('customers').update('customers').delete('customers')
     .grant('Staff')
-        .createOwn('customers')
-        .readOwn('customers')
+        .createOwn('customers').readOwn('customers')
 
 module.exports = accesscontrol;        

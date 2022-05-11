@@ -21,6 +21,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors(corOptions));
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -35,7 +37,7 @@ app.use('/employees', verifyToken, employeesRouter);
 app.use('/users', usersRouter);
 
 // test api
-app.get('/', (req, res) => {
+app.get('/', verifyToken, (req, res) => {
     res.status(200).json({
         success: true,
         data: 'hellp from api'
