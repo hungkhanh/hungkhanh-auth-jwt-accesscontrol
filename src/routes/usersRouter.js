@@ -6,22 +6,24 @@ import usersController from '../controllers/usersController';
 import Joi from "joi";
 const router = express.Router();
 
-router.route('/register')
-    .get(usersController.registerGet)
-    .post(celebrate({
+
+
+router.get('/register', usersController.registerGet);
+
+router.post('/register', celebrate({
         body: usersSchema
-    }),
+    }), 
         usersController.createUser
-    )
+);
 
-router.route('/login')
-    .get(usersController.loginGet)
-    .post(celebrate({
+router.get('/login', usersController.loginGet);
+
+router.post('/login', celebrate({
         body: usersSchema
     }),
-    usersController.loginPost)
+        usersController.loginPost
+)
 
-router.route('/info')
-    .get(usersController.infoGet)
+router.get('/info', usersController.infoGet)
 
 module.exports = router;

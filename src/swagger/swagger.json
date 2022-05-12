@@ -1,0 +1,1103 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API for user, customer, employee",
+    "version": "1.0.0",
+    "title": "API Documentation"
+  },
+  "tags": [
+    {
+      "name": "customers",
+      "description": "Infomation about customers"
+    },
+    {
+      "name": "employees",
+      "description": "Infomation about employees"
+    },
+    {
+      "name": "users",
+      "description": "Operations register and login about user"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/users/register": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Create user into the system",
+        "description": "",
+        "operationId": "registerGet",
+        "produces": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "get register successful"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Add a new user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {},
+              "example": {
+                "username": "hung",
+                "password": "hung123"
+              }
+            } 
+          }
+        },
+        "description": "",
+        "operationId": "registerPost",
+        "produces": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "username",
+            "description": "username in account",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "password",
+            "description": "password in account",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "loginGet",
+        "produces": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "get login successful",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "login user the system",
+        "description": "",
+        "operationId": "loginPost",
+        "produces": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "body",
+            "description": "The user name for login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "The password for login",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "create successful",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/users/info": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Infomation a employee",
+        "description": "",
+        "operationId": "infoGet",
+        "produces": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "get info",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "users_auth": [
+              "write:employees",
+              "read:employees"
+            ]
+          }
+        ]
+      }
+    },
+    "/customers": {
+      "get": {
+        "tags": [
+          "customers"
+        ],
+        "summary": "get all customers",
+        "description": "",
+        "operationId": "getAllCustomers",
+        "produces": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "get all customers successful"
+          }
+        },
+        "security": [
+          {
+            "users_auth": [
+              "read:customers"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "customers"
+        ],
+        "summary": "Creates a customer",
+        "description": "",
+        "operationId": "createCustomer",
+        "produces": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "customerName",
+            "in": "body",
+            "description": "customer name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "contactLastName",
+            "in": "body",
+            "description": "contact last name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "contactFirstName",
+            "in": "body",
+            "description": "contact first name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "body",
+            "description": "phone",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "addressLine1",
+            "in": "body",
+            "description": "address line 1",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "addressLine2",
+            "in": "body",
+            "description": "address line 2",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "city",
+            "in": "body",
+            "description": "city",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "state",
+            "in": "body",
+            "description": "state",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "postalCode",
+            "in": "body",
+            "description": "postal code",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "country",
+            "in": "body",
+            "description": "country",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "salesRepEmployeeNumber",
+            "in": "body",
+            "description": "",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "creditLimit",
+            "in": "body",
+            "description": "credit limit",
+            "required": false,
+            "type": "number"
+          }
+        ],
+        "responses":{
+          "201": {
+            "description": "create successful"
+          }
+        },
+        "security": [
+          {
+            "users_auth": [
+              "write:customers"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "customers"
+        ],
+        "summary": "Delete all customers",
+        "description": "",
+        "operationId": "deleteAllCustomers",
+        "produces": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "delete successful"
+          }
+        },
+        "security": [
+          {
+            "users_auth": [
+              "write:customers"
+            ]
+          }
+        ]
+      }
+    },
+    "/customers/{customersNumber}": {
+      "get": {
+        "tags": [
+          "customers"
+        ],
+        "summary": "get one customer",
+        "description": "",
+        "operationId": "getOneCustomer",
+        "produces": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "customerNumber",
+            "in": "query",
+            "description": "primary key customer",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid customersNumber"
+          }
+        },
+        "security": [
+          {
+            "users_auth": [
+              "read:customers"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "customers"
+        ],
+        "summary": "update customers",
+        "description": "",
+        "operationId": "updateOrCreateCustomer",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "customerName",
+            "in": "body",
+            "description": "customer name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "contactLastName",
+            "in": "body",
+            "description": "contact last name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "contactFirstName",
+            "in": "body",
+            "description": "contact first name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "body",
+            "description": "phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "addressLine1",
+            "in": "body",
+            "description": "address line 1",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "addressLine2",
+            "in": "body",
+            "description": "address line 2",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "city",
+            "in": "body",
+            "description": "city",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "state",
+            "in": "body",
+            "description": "state",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "postalCode",
+            "in": "body",
+            "description": "postal code",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "country",
+            "in": "body",
+            "description": "country",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "salesRepEmployeeNumber",
+            "in": "body",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "creditLimit",
+            "in": "body",
+            "description": "credit limit",
+            "required": false,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "update successful",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid input data"
+          }
+        },
+        "security": [
+          {
+            "users_auth": [
+              "write:customers"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "customers"
+        ],
+        "summary": "update customers",
+        "description": "",
+        "operationId": "updateCustomer",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "customerName",
+            "in": "body",
+            "description": "customer name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "contactLastName",
+            "in": "body",
+            "description": "contact last name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "contactFirstName",
+            "in": "body",
+            "description": "contact first name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "body",
+            "description": "phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "addressLine1",
+            "in": "body",
+            "description": "address line 1",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "addressLine2",
+            "in": "body",
+            "description": "address line 2",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "city",
+            "in": "body",
+            "description": "city",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "state",
+            "in": "body",
+            "description": "state",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "postalCode",
+            "in": "body",
+            "description": "postal code",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "country",
+            "in": "body",
+            "description": "country",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "salesRepEmployeeNumber",
+            "in": "body",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "creditLimit",
+            "in": "body",
+            "description": "credit limit",
+            "required": false,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "update successful",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid input data"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "customers"
+        ],
+        "summary": "delete a customer",
+        "description": "",
+        "operationId": "deleteOneCustomer",
+        "produces": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "delete successful",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "users_auth": [
+              "write:customers"
+            ]
+          }
+        ]
+      }
+    },
+    "/employees": {
+      "get": {
+        "tags": [
+          "employees"
+        ],
+        "summary": "get all employees",
+        "description": "",
+        "operationId": "getAllEmployees",
+        "produces": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "responses": {
+          "default": {
+            "description": "get all employees successful"
+          }
+        },
+        "security": [
+          {
+            "users_auth": [
+              "read:employees"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "employees"
+        ],
+        "summary": "Creates a employee",
+        "description": "",
+        "operationId": "createEmployee",
+        "produces": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "firstName",
+            "in": "body",
+            "description": "first name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "lastName",
+            "in": "body",
+            "description": "last name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "extension",
+            "in": "body",
+            "description": "extension",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "body",
+            "description": "email",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "officeCode",
+            "in": "body",
+            "description": "office code",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "reportsTo",
+            "in": "body",
+            "description": "reports to",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "jobTitle",
+            "in": "body",
+            "description": "job title",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "create successful"
+          }
+        },
+        "security": [
+          {
+            "users_auth": [
+              "write:employees"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "employees"
+        ],
+        "summary": "Delete all employees",
+        "description": "",
+        "operationId": "deleteAllEmployees",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "delete successful"
+          }
+        },
+        "security": [
+          {
+            "users_auth": [
+              "write:employees"
+            ]
+          }
+        ]
+      }
+    },
+    "/employees/{employeesNumber}": {
+      "get": {
+        "tags": [
+          "employees"
+        ],
+        "summary": "get one employee",
+        "description": "",
+        "operationId": "getOneEmployee",
+        "produces": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "employeeNumber",
+            "in": "query",
+            "description": "primary key employee",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid customersNumber"
+          }
+        },
+        "security": [
+          {
+            "users_auth": [
+              "write:employees"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "employees"
+        ],
+        "summary": "update customers",
+        "description": "",
+        "operationId": "updateOrCreateEmployee",
+        "produces": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "firstName",
+            "in": "body",
+            "description": "first name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lastName",
+            "in": "body",
+            "description": "last name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "extension",
+            "in": "body",
+            "description": "extension",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "body",
+            "description": "email",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "officeCode",
+            "in": "body",
+            "description": "office code",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "reportsTo",
+            "in": "body",
+            "description": "reports to",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "jobTitle",
+            "in": "body",
+            "description": "job title",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "update successful",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid input data"
+          }
+        },
+        "security": [
+          {
+            "users_auth": [
+              "write:employees"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "employees"
+        ],
+        "summary": "update customers",
+        "description": "",
+        "operationId": "updateEmployee",
+        "produces": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "firstName",
+            "in": "body",
+            "description": "first name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lastName",
+            "in": "body",
+            "description": "last name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "extension",
+            "in": "body",
+            "description": "extension",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "body",
+            "description": "email",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "officeCode",
+            "in": "body",
+            "description": "office code",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "reportsTo",
+            "in": "body",
+            "description": "reports to",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "jobTitle",
+            "in": "body",
+            "description": "job title",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "update successful",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid input data"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "employees"
+        ],
+        "summary": "delete a employee",
+        "description": "",
+        "operationId": "deleteOneEmployee",
+        "produces": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "delete successful",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "users_auth": [
+              "write:employees"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "users_auth": {
+      "type": "bearer",
+      "flow": "implicit",
+      "scopes": {
+        "write:users": "modify employees or customers",
+        "read:users": "read employees or customers"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "Users": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "employeeNumber": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "xml": {
+        "name": "Users"
+      }
+    },
+    "Employees": {
+      "type": "object",
+      "properties": {
+        "employeeNumber": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "extension": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "officeCode": {
+          "type": "string"
+        },
+        "reportsTo": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "jobTitle": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Employees"
+      }
+    },
+    "Customers": {
+      "type": "object",
+      "properties": {
+        "customerNumber": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "customerName": {
+          "type": "string"
+        },
+        "contactLastName": {
+          "type": "string"
+        },
+        "contactFirstName": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "addressLine1": {
+          "type": "string"
+        },
+        "addressLine2": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "postalCode": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "salesRepEmployeeNumber": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "creditLimit": {
+          "type": "number"
+        }
+      },
+      "xml": {
+        "name": "Customers"
+      }
+    }
+  }
+}

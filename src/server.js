@@ -7,6 +7,12 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import ejs from 'ejs';
 import { errors } from 'celebrate';
+import swaggerUi from 'swagger-ui-express'
+import swaggerDocument from './swagger/swagger.json';
+
+
+
+
 import path from 'path';
 
 import verifyToken from './middlewares/auth';
@@ -24,7 +30,6 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(errors());
 
-
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -37,6 +42,10 @@ import usersRouter from './routes/usersRouter';
 app.use('/customers', verifyToken, customersRouter);
 app.use('/employees', verifyToken, employeesRouter);
 app.use('/users', usersRouter);
+
+app.use('/docs', swaggerUi.serve);
+app.get('/docs', swaggerUi.setup(swaggerDocument));
+
 
 // test api
 app.get('/', verifyToken, (req, res) => {
