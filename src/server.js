@@ -14,7 +14,7 @@ import swaggerDocument from './swagger/swagger.json';
 
 
 import path from 'path';
-
+import logger from './winston/logger';
 import verifyToken from './middlewares/auth';
 
 const app = express();
@@ -60,5 +60,6 @@ const PORT = process.env.PORT || 8080;
 
 // server
 app.listen(PORT, (req, res) => {
-    console.log(`Server started on port ${PORT}`);
+    // console.log(`Server started on port ${PORT}`);
+    logger.log('info', `Server started on port ${PORT}`);
 });
