@@ -6,11 +6,15 @@ const { combine, timestamp, label, printf, colorize, errors } = winston.format;
 const logger = winston.createLogger({
     level: 'info',
     format: combine(
-        colorize(),
+        // colorize({
+        //     all: false,
+        //     message: false,
+        //     level: false
+        // }),
         label({ label: ['LOG'] }),
         timestamp(),
-        printf(({ level, message, label, timestamp, stack }) => {
-            return `${timestamp} [${label}] ${level}: ${stack || message}`;
+        printf(({ level, message, label, timestamp }) => {
+            return `${timestamp} [${label}] ${level}: ${message}`;
         }),
         errors({ stack: true})
     ),

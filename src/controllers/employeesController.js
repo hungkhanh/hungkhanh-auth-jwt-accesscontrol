@@ -4,14 +4,16 @@ import jwt from 'jsonwebtoken';
 
 import db from '../models';
 import accesscontrol from '../policy/role';
+import logger from '../winston/logger';
 
 const User = db.users
 const Employee = db.employees
 const Customer = db.customers
 
 // 1. get all employees
-const getAllEmployees = async (req, res) => {
+const getAllEmployees = async (req, res, next) => {
     const username = res.locals.username
+    logger.log('info', 'GET all employees');
     try {
         //  get jobTitle
         const jobTitle = getJobTitle(username);
@@ -25,12 +27,12 @@ const getAllEmployees = async (req, res) => {
             res.status(403).end();
         }
     } catch (error) {
-        console.log(error);
+        next(error)
     }
 }
 
 // 2. create a employee
-const createEmployee = async (req, res) => {
+const createEmployee = async (req, res, next) => {
     const data = req.body;
     const username = res.locals.username
     try {
@@ -39,7 +41,7 @@ const createEmployee = async (req, res) => {
         const user = await User.findByPk(username);
         const employee = await Employee.findByPk(user.employeeNumber);
         const jobTitle = employee.jobTitle;
-
+        logger.log('info', 'POST create employee');
         // console.log(`jobTitle: ${jobTitle}`);
         // Check role permissions
         const permission = accesscontrol.can(jobTitle).createAny('employees');
@@ -58,12 +60,12 @@ const createEmployee = async (req, res) => {
             res.status(403).end();
         }
     } catch (error) {
-        console.log(error);
+        next(error)
     }
 }
 
 // 3. delete all employees
-const deleteAllEmployees = async (req, res) => {
+const deleteAllEmployees = async (req, res, next) => {
     
     const CONSTRAINT_CUSTOMERS_EMPLOYEES = 'customers_ibfk_1';
     const CUSTOMERS_TABLE = 'customers';
@@ -72,6 +74,7 @@ const deleteAllEmployees = async (req, res) => {
     const CUSTOMERS_REF = 'salesRepEmployeeNumber';
     const VALUE_NULL_CUSTOMER = { salesRepEmployeeNumber: null };
     const username = res.locals.username
+    logger.log('info', 'DELETE all employees');
     try {
         //  get jobTitle
         const jobTitle = getJobTitle(username);
@@ -101,14 +104,15 @@ const deleteAllEmployees = async (req, res) => {
             res.status(403).end();
         }
     } catch (error) {
-        console.log(error);
+        next(error)
     }
 }
 
 // 4. get one employee by Id
-const getOneEmployee = async (req, res) => {
+const getOneEmployee = async (req, res, next) => {
     const employeeNumber = req.params.employeeNumber;
     const username = res.locals.username
+    logger.log('info', 'GET employee');
     try {
         //  get jobTitle
         const jobTitle = getJobTitle(username);
@@ -122,15 +126,16 @@ const getOneEmployee = async (req, res) => {
             res.status(403).end();
         }
     } catch (error) {
-        console.log(error);
+        next(error)
     }
 }
 
 // 5. update info employee PUT by Id
-const updateOrCreateEmployee = async (req, res) => {
+const updateOrCreateEmployee = async (req, res, next) => {
     const employeeNumber = req.params.employeeNumber;
     const data = req.body;
     const username = res.locals.username
+    logger.log('info', 'PUT update employee');
     try {
         //  get jobTitle
         const jobTitle = getJobTitle(username);
@@ -153,19 +158,17 @@ const updateOrCreateEmployee = async (req, res) => {
             res.status(403).end();
         }
     } catch (error) {
-        console.log(error);
+        next(error)
     }
 }
 
 // 6. update info employee PATCH by Id
-const updateEmployee = async (req, res) => {
+const updateEmployee = async (req, res, next) => {
     const employeeNumber = req.params.employeeNumber;
     const data = req.body;
     const username = res.locals.username
 
-
-
-
+    logger.log('info', 'PATCH employee');
     try {
 
         //  get jobTitle
@@ -184,16 +187,17 @@ const updateEmployee = async (req, res) => {
             res.status(403).end();
         }        
     } catch (error) {
-        console.log(error);
+        next(error)
     }
 }
 
 // 7. delete one employee by Id
-const deleteOneEmployee = async (req, res) => {
+const deleteOneEmployee = async (req, res, next) => {
     const employeeNumber = req.params.employeeNumber;
     const VALUE_NULL_CUSTOMER = { salesRepEmployeeNumber: null };
     const VALUE_NULL_EMPLOYEE = { reportsTo: null };
     const username = res.locals.username
+    logger.log('info', 'DELETE employee');
     try {
 
         //  get jobTitle
@@ -213,15 +217,16 @@ const deleteOneEmployee = async (req, res) => {
             res.status(403).end();
         }
     } catch (error) {
-        console.log(error);
+        next(error)
     }
 }
 
 // 8. link employeeNumber from employees to users
-const linkEmployee = async (req, res) => {
+const linkEmployee = async (req, res, next) => {
     const usernameEmployee = req.body.username;
     const username = res.locals.username
     const data = { employeeNumber: req.body.employeeNumber };
+    logger.log('info', 'GET link employeeNumber');
     try {
         const userBoss = await User.findByPk(username);
         const employeeBoss = await Employee.findByPk(userBoss.employeeNumber);
@@ -240,12 +245,12 @@ const linkEmployee = async (req, res) => {
         
         
     } catch (error) {
-        console.log(error);
+        next(error)
     }
 }
 
 // 8. get all customers of an employee
-// const getCusomtersOfEmployee = async (req, res) => {
+// const getCusomtersOfEmployee = async (req, res, next) => {
 //     const employeeNumber = req.params.employeeNumber;
 //     const username = req.locals.username;
 
@@ -270,12 +275,12 @@ const linkEmployee = async (req, res) => {
 //         });
 //         res.status(200).send(data);
 //     } catch (error) {
-//         console.log(error);
+//         next(error)
 //     }
 // }
 
 // 9. BONUS get all staff of an employee by reportsTo
-// const getStaffsOfEmployee = async (req, res) => {
+// const getStaffsOfEmployee = async (req, res, next) => {
 //     const employeeNumber = req.params.employeeNumber;
 //     try {
 //         const data = await Employee.findAll({
@@ -287,7 +292,7 @@ const linkEmployee = async (req, res) => {
 //         });
 //         res.status(200).send(data);
 //     } catch (error) {
-//         console.log(error);
+//         next(error)
 //     }
 // }
 

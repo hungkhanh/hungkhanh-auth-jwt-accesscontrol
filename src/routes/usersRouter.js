@@ -10,9 +10,13 @@ const router = express.Router();
 
 router.get('/register', usersController.registerGet);
 
-router.post('/register', celebrate({
-        body: usersSchema
-    }), 
+// router.post('/register', celebrate({
+//         body: usersSchema
+//     }), 
+//         usersController.createUser
+// );
+
+router.post('/register',
         usersController.createUser
 );
 

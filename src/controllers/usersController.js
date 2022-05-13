@@ -4,17 +4,20 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import db from '../models';
+import logger from '../winston/logger';
 
 const User = db.users
 
 // 1. GET login
-const loginGet = (req, res) => {
+const loginGet = (req, res, next) => {
+    logger.log('info', 'GET login');
     res.status(200).render('login', { title: 'Login' });
 }
 
 // 2. POST login: auth user
-const loginPost = async (req, res) => {
+const loginPost = async (req, res, next) => {
     const data = req.body;
+    logger.log('info', 'POST login');
     try {
         const user = await User.findByPk(data.username);
         if(!user) {
@@ -30,20 +33,22 @@ const loginPost = async (req, res) => {
                 token: accessToken
             })
         }
-    } catch (error) {
-        console.log(error);
+    } catch (error) { 
+        next(error);
     }
 }
 
 // 3. GET register
-const registerGet = (req, res) => {
+const registerGet = (req, res, next) => {
+    logger.log('info', 'GET register');
     res.status(200).render('register', { title: 'Register' });
 }
 
 // 4. POST register: create user
-const createUser = async (req, res) => {
+const createUser = async (req, res, next) => {
     const data = req.body;
-    delete data['re-password']; 
+    delete data['re-password'];
+    logger.log('info', 'POST register');
     try {
         const salt = await genSaltPromise();
         const hash = await hashPasswordPromise(data.password, salt);
@@ -53,19 +58,20 @@ const createUser = async (req, res) => {
         console.log(`Token: ${accessToken}`);
         res.cookie('jwt_token', accessToken);
         res.status(201).redirect('/users/info');
-    } catch (error) {
-        console.log(error);
+    } catch (error) { 
+        next(error);
     }
 }
 
 // 5. GET info
-const infoGet = (req, res) => {
+const infoGet = (req, res, next) => {
+    logger.log('info', 'GET info');
     res.status(200).render('info', { title: 'Infomation' });
 }
 
-const dashboardGet = (req, res) => {
-    res.status(200).render('dashboard', { title: 'Dashboard' });
-}
+// const dashboardGet = (req, res, next) => {
+//     res.status(200).render('dashboard', { title: 'Dashboard' });
+// }
 
 
 // use promise bcrypt

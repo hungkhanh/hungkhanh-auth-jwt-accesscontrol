@@ -1,13 +1,14 @@
 import db from '../models';
 import accesscontrol from '../policy/role';
-
+import logger from '../winston/logger';
 const User = db.users
 const Employee = db.employees
 const Customer = db.customers
 
 // 1. get all customers
-const getAllCustomers = async (req, res) => {
+const getAllCustomers = async (req, res, next) => {
     const username = res.locals.username;
+    logger.log('info', 'GET all customers');
     try {
         const user = await User.findByPk(username);
         const employee = await Employee.findByPk(user.employeeNumber);
@@ -52,14 +53,15 @@ const getAllCustomers = async (req, res) => {
         }
         res.status(200).send(customers);    
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 }
 
 // 2. create a customer
-const createCustomer = async (err, req, res) => {
+const createCustomer = async (req, res, next) => {
     const data = req.body;
     const username = res.locals.username;
+    logger.log('info', 'POST create customer');
     try {
 
         const user = await User.findByPk(username);
@@ -109,14 +111,14 @@ const createCustomer = async (err, req, res) => {
             data: customer
         })
     } catch (error) {
-        if(error.is)
-        console.log(error);
+        next(error);
     }
 }
 
 // 3. delete all customers
-const deleteAllCustomers = async (req, res) => {
+const deleteAllCustomers = async (req, res, next) => {
     const username = res.locals.username
+    logger.log('info', 'DELETE all customers');
     try {
         const user = User.findByPk(username);
         const employee = Employee.findByPk(user);
@@ -133,14 +135,15 @@ const deleteAllCustomers = async (req, res) => {
             res.status(403).end();
         }
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 }
 
 // 4. get one customer by Id
-const getOneCustomer = async (req, res) => {
+const getOneCustomer = async (req, res, next) => {
     const customerNumber = req.params.customerNumber;
     const username = res.locals.username;
+    logger.log('info', 'GET customer');
     try {
         const user = await User.findByPk(username);
         const employee = await Employee.findByPk(user.employeeNumber);
@@ -189,15 +192,16 @@ const getOneCustomer = async (req, res) => {
         }
         
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 }
 
 // 5. update info customer PUT by Id
-const updateOrCreateCustomer = async (req, res) => {
+const updateOrCreateCustomer = async (req, res, next) => {
     const customerNumber = req.params.customerNumber;
     const data = req.body;
     const username = res.locals.username;
+    logger.log('info', 'PUT update customer');
     try {
         const user = User.findByPk(username);
         const employee = Employee.findByPk(user.employeeNumber);
@@ -221,15 +225,16 @@ const updateOrCreateCustomer = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 }
 
 // 6. update info customer PATCH by Id
-const updateCustomer = async (req, res) => {
+const updateCustomer = async (req, res, next) => {
     const customerNumber = req.params.customerNumber;
     const data = req.body;
     const username = res.locals.username;
+    logger.log('info', 'PATCH customer');
     try {
         const user = User.findByPk(username);
         const employee = Employee.findByPk(user.employeeNumber);
@@ -261,14 +266,15 @@ const updateCustomer = async (req, res) => {
             res.status(401).end()
         }
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 }
 
 // 7. delete one customer by Id
-const deleteOneCustomer = async (req, res) => {
+const deleteOneCustomer = async (req, res, next) => {
     const customerNumber = req.params.customerNumber;
     const username = res.locals.username;
+    logger.log('info', 'DELETE customer');
     try {
         const user = User.findByPk(username);
         const employee = Employee.findByPk(user.employeeNumber);
@@ -301,7 +307,7 @@ const deleteOneCustomer = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 }
 

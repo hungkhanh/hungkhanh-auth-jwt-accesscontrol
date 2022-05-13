@@ -30,6 +30,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(errors());
 
+
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -53,6 +55,15 @@ app.get('/', verifyToken, (req, res) => {
         success: true,
         data: 'hellp from api'
     });
+});
+
+// handling error
+app.use((err, req, res, next) => {
+    logger.log('error', err);
+    res.status(500).json({
+        success: false,
+        message: 'Server error'
+    })
 });
 
 // port
